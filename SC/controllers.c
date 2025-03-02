@@ -1,13 +1,17 @@
 
-#define KP 1.0F
-#define KI 0.1F
-#define KD 0.05F
-#define DT 0.01F
-#define INTEGRAL_MAX 50.0F
-#define OUTPUT_MAX 100.0F
-#define OUTPUT_MIN -100.0F
+#include "controllers.h"
 
-float pidControl(float setpoint, float currentSpeedFilt) {
+float pidControl(float setpoint, float currentSpeedFilt, const PIDParams* params) 
+{
+
+    float KP = params -> KP;
+    float KI = params -> KI;
+    float KD = params -> KD;
+    float DT = params -> DT;
+    float INTEGRAL_MAX = params -> INTEGRAL_MAX;
+    float OUTPUT_MAX = params -> OUTPUT_MAX;
+    float OUTPUT_MIN = params -> OUTPUT_MIN;
+
     static float integral = 0;
     static float prevError = 0;
     static int output_saturated = 0;

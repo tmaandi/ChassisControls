@@ -7,3 +7,8 @@ Transition: Idle if speed ≈ setpoint, Apply if speed < setpoint,
 Release if speed > setpoint.”
 
 */
+
+typedef enum {IDLE,             // 0
+              APPLY,            // 1
+              RELEASE}          // 2
+              AbsState;
