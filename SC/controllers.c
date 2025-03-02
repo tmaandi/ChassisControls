@@ -18,7 +18,6 @@ float pidControl(float setpoint, float currentSpeedFilt, bool reset, const PIDPa
     if (reset == true)
     {
         integral = 0;
-        prevError = 0;
         output_saturated = 0;
     }
 
