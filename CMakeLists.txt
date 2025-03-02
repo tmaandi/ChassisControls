@@ -42,21 +42,24 @@ endif()
 # Common source files
 set(SOURCES 
     ChassisControls.c
-    lib/controllers.c
-    lib/filters.c
+    ABS/abs.c
+    SC/controllers.c
+    SC/filters.c
 )
 
 if(PC_BUILD)
     add_executable(ChassisControlsPC ${SOURCES})
     target_include_directories(ChassisControlsPC PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${CMAKE_CURRENT_LIST_DIR}/lib
+        ${CMAKE_CURRENT_LIST_DIR}/ABS
+        ${CMAKE_CURRENT_LIST_DIR}/SC
     )
 else()
     add_executable(ChassisControls ${SOURCES})
     target_include_directories(ChassisControls PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${CMAKE_CURRENT_LIST_DIR}/lib
+        ${CMAKE_CURRENT_LIST_DIR}/ABS
+        ${CMAKE_CURRENT_LIST_DIR}/SC
     )
     # Add pico-specific configurations
     pico_set_program_name(ChassisControls "ChassisControls")
