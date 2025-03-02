@@ -12,9 +12,16 @@
             "problemMatcher": ["$gcc"]
         },
         {
-            "label": "Build (PC)",
+            "label": "Build (PC Debug)",
             "type": "shell",
-            "command": "mkdir -p build_pc && cd build_pc && cmake -DPC_BUILD=ON .. && make -j4",
+            "command": "mkdir -p build_pc && cd build_pc && cmake -DCMAKE_BUILD_TYPE=Debug -DPC_BUILD=ON .. && make -j4",
+            "group": "build",
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Build (PC Release)",
+            "type": "shell",
+            "command": "mkdir -p build_pc && cd build_pc && cmake -DCMAKE_BUILD_TYPE=Release -DPC_BUILD=ON .. && make -j4",
             "group": "build",
             "problemMatcher": ["$gcc"]
         },
@@ -28,7 +35,7 @@
             "label": "Run (PC)",
             "type": "shell",
             "command": "./build_pc/ChassisControlsPC",
-            "dependsOn": "Build (PC)",
+            "dependsOn": "Build (PC Release)",
             "group": {
                 "kind": "test",
                 "isDefault": true

@@ -4,8 +4,8 @@
 #include "pico/stdlib.h"
 #endif
 
+#include "abs.h"
 #include "filters.h"
-#include "controllers.h"
 
 const PIDParams params = {  1.00F, /* KP */  
                             0.10F, /* KI */  
@@ -17,12 +17,44 @@ const PIDParams params = {  1.00F, /* KP */
                          };
 
 int main() {
-    float speeds[] = {10, 8, 6, 8, 10};
+
+    float speeds[] = {10, 8, 6, 6, 8, 10, 14, 16, 14};
+
+    int num_speeds = sizeof(speeds)/sizeof(float);
+
     float setpoint = 10.0F;
-    for (int i = 0; i < 5; i++) {
-        float filtered = movingAverage(speeds[i]);
-        float control = pidControl(setpoint, filtered, &params);
-        printf("Speed: %.2f, Filtered: %.2f, Control: %.2f\n", speeds[i], filtered, control);
+
+    AbsState abs_state = IDLE;
+
+    float controlCmd = 0;
+
+    float filtered_whl_spd;
+    const char* absStateStr;
+
+    for (int i = 0; i < num_speeds; i++) 
+    {
+
+        filtered_whl_spd = movingAverage(speeds[i]);
+
+        abs_state = absControl(setpoint, filtered_whl_spd,  &controlCmd, &params);
+
+        switch (abs_state) {
+            case IDLE:
+            absStateStr = "IDLE";
+            break;
+            case APPLY:
+            absStateStr = "APPLY";
+            break;
+            case RELEASE:
+            absStateStr = "RELEASE";
+            break;
+            default:
+            absStateStr = "UNKNOWN";
+            break;
+        }
+        
+        printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %.2f\n", setpoint, filtered_whl_spd, absStateStr, controlCmd);
     }
+    
     return 0;
 }

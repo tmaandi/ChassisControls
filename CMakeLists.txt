@@ -54,6 +54,8 @@ if(PC_BUILD)
         ${CMAKE_CURRENT_LIST_DIR}/ABS
         ${CMAKE_CURRENT_LIST_DIR}/SC
     )
+    # Add math library for PC build
+    target_link_libraries(ChassisControlsPC m)
 else()
     add_executable(ChassisControls ${SOURCES})
     target_include_directories(ChassisControls PRIVATE

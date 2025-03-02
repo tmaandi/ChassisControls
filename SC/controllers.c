@@ -1,9 +1,8 @@
 
 #include "controllers.h"
 
-float pidControl(float setpoint, float currentSpeedFilt, const PIDParams* params) 
+float pidControl(float setpoint, float currentSpeedFilt, bool reset, const PIDParams* params) 
 {
-
     float KP = params -> KP;
     float KI = params -> KI;
     float KD = params -> KD;
@@ -15,6 +14,13 @@ float pidControl(float setpoint, float currentSpeedFilt, const PIDParams* params
     static float integral = 0;
     static float prevError = 0;
     static int output_saturated = 0;
+
+    if (reset == true)
+    {
+        integral = 0;
+        prevError = 0;
+        output_saturated = 0;
+    }
 
     float error = setpoint - currentSpeedFilt;
     float derivative = (error - prevError) / DT;
