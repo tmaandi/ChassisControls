@@ -15,13 +15,15 @@ float pidControl(float setpoint, float currentSpeedFilt, bool reset, const PIDPa
     static float prevError = 0;
     static int output_saturated = 0;
 
+    float error = setpoint - currentSpeedFilt;
+
     if (reset == true)
     {
         integral = 0;
         output_saturated = 0;
+        prevError = error;
     }
-
-    float error = setpoint - currentSpeedFilt;
+    
     float derivative = (error - prevError) / DT;
     float output = KP * error + KI * integral + KD * derivative;
 
