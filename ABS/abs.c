@@ -1,10 +1,12 @@
 
+#include <stdint.h>
 #include <math.h>
 
 
 #include "filters.h"
 
 #include "abs.h"
+#include "pwm.h"
 
 /*
 
@@ -21,7 +23,7 @@ const AbsState nextState[3][3] = {{IDLE, IDLE, IDLE},
 
 static AbsEvent calcAbsEvent(float setpoint, float currentSpeedFilt);
 
-AbsState absControl(float setpoint, float currentSpeedFilt, float* controlCmd, const PIDParams* params)
+AbsState absControl(float setpoint, float currentSpeedFilt, uint8_t* controlCmd, const PIDParams* params)
 {
     float controlOutput;
 
@@ -50,23 +52,23 @@ AbsState absControl(float setpoint, float currentSpeedFilt, float* controlCmd, c
     {
         case IDLE:
 
-            *controlCmd = 0.0f;
+            *controlCmd = (uint8_t)0;
             break;
             
         case APPLY:
 
                 /* minus because increasing pressure results in reduced speed, 
                control output here means pressure gradient */
-               *controlCmd = -controlOutput;
+               *controlCmd = pidToPwm(-controlOutput);
 
         case RELEASE:
                 /* minus because increasing pressure results in reduced speed, 
                control output here means pressure gradient */
-               *controlCmd = -controlOutput;
+               *controlCmd = pidToPwm(-controlOutput);
             break;
 
         default:
-            *controlCmd = 0.0f;
+            *controlCmd = (uint8_t)0;
             break;
     }
 

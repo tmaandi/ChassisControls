@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdint.h>
 
 #ifndef PC_BUILD
 #include "pico/stdlib.h"
@@ -26,7 +26,7 @@ int main() {
 
     AbsState abs_state = IDLE;
 
-    float controlCmd = 0;
+    uint8_t controlCmd = 0;
 
     float filtered_whl_spd;
     const char* absStateStr;
@@ -36,7 +36,7 @@ int main() {
 
         filtered_whl_spd = movingAverage(speeds[i]);
 
-        abs_state = absControl(setpoint, filtered_whl_spd,  &controlCmd, &params);
+        abs_state = absControl(setpoint, filtered_whl_spd, &controlCmd, &params);
 
         switch (abs_state) {
             case IDLE:
@@ -53,7 +53,7 @@ int main() {
             break;
         }
         
-        printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %.2f\n", setpoint, filtered_whl_spd, absStateStr, controlCmd);
+        printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpoint, filtered_whl_spd, absStateStr, controlCmd);
     }
     
     return 0;

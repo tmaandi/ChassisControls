@@ -45,6 +45,7 @@ set(SOURCES
     ABS/abs.c
     SC/controllers.c
     SC/filters.c
+    SC/pwm.c
 )
 
 if(PC_BUILD)
