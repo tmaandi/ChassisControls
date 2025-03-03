@@ -58,45 +58,133 @@ This repository aims to serve as a learning resource and starting point for anyo
 
 ## Building and Running
 
+This project supports both PC simulation and Raspberry Pi Pico 2 deployment, with VS Code tasks and launch configurations for streamlined development. Follow the steps below based on your target environment.
+
 ### PC Simulation
 
-Compile:
-```bash
-gcc -o ChassisControls ChassisControls.c ABS/abs.c FM/fault.c SC/controllers.c filters.c pwm.c STEER/steer.c -lm
-```
+#### Building
+Use VS Code tasks to compile for PC simulation in either Debug or Release mode:
 
-Run:
-```bash
-./ChassisControls
-```
-Outputs ABS and steering test sequences to console.
+1. **Open in VS Code**:
+   - Ensure you have the recommended extensions installed (see VS Code Extensions below).
 
-Verify with Python:
-```bash
-python Tests/test_chassis.py
-```
-Simulates steering inputs and validates PWM/states.
+2. **Build for Debug**:
+   - Run the “Build (PC Debug)” task:
+     ```bash
+     Ctrl+Shift+B (or Cmd+Shift+B on macOS) and select "Build (PC Debug)"
+     ```
+   This executes:
+     ```bash
+     mkdir -p build_pc && cd build_pc && cmake -DCMAKE_BUILD_TYPE=Debug -DPC_BUILD=ON .. && make -j4
+     ```
+   Generates build_pc/ChassisControlsPC for debugging.
+
+3. **Build for Release**:
+   - Run the “Build (PC Release)” task:
+     ```bash
+     Ctrl+Shift+B and select "Build (PC Release)"
+     ```
+   This executes:
+     ```bash
+     mkdir -p build_pc && cd build_pc && cmake -DCMAKE_BUILD_TYPE=Release -DPC_BUILD=ON .. && make -j4
+     ```
+   Generates build_pc/ChassisControlsPC for optimized execution.
+
+4. **Clean**:
+   - Run the “Clean” task to remove build artifacts:
+     ```bash
+     Ctrl+Shift+B and select "Clean"
+     ```
+   This executes:
+     ```bash
+     rm -rf build build_pc
+     ```
+
+#### Running
+- **Run PC Simulation**:
+  - Use the “Run (PC)” task after a Release build:
+    ```bash
+    Ctrl+Shift+B and select "Run (PC)"
+    ```
+  This executes:
+    ```bash
+    ./build_pc/ChassisControlsPC
+    ```
+  Outputs ABS and steering test sequences to the console.
+
+#### Debugging
+- **Debug PC Build**:
+  - Set breakpoints in ChassisControls.c or related files and launch the “Debug PC Build” configuration:
+    ```bash
+    Press F5 and select “Debug PC Build”
+    ```
+  This uses the cppdbg debugger with gdb, targeting build_pc/ChassisControlsPC.
+  Requires a prior “Build (PC Debug)” task.
 
 ### Raspberry Pi Pico 2
 
-Setup Pico SDK:
-Follow Pico SDK setup.
-Set PICO_SDK_PATH environment variable.
+#### Setup
+- **Install Pico SDK and Tools**:
+  - Follow Getting Started with Pico.
+  - Set PICO_SDK_PATH (e.g., ${env:HOME}/.pico-sdk/sdk/2.1.1 on Linux/macOS, ${env:USERPROFILE}/.pico-sdk/sdk/2.1.1 on Windows).
+  - Ensure PICO_TOOLCHAIN_PATH, CMake, ARM GCC, and OpenOCD are installed as per your settings.json and tasks.json.
 
-Configure:
-Open in VS Code, select "Pico" build task in tasks.json.
+#### Building
+- **Build for Pico**:
+  - Open in VS Code, ensure the “Pico” configuration is active in c_cpp_properties.json.
+  - Run the “Build (Pico)” task:
+    ```bash
+    Ctrl+Shift+B and select "Build (Pico)"
+    ```
+  This executes:
+    ```bash
+    mkdir -p build && cd build && cmake .. && ${env:HOME}/.pico-sdk/ninja/v1.12.1/ninja -j4
+    ```
+  (or ${env:USERPROFILE}/.pico-sdk/ninja/v1.12.1/ninja.exe on Windows).
+  Generates build/ChassisControls.uf2 for flashing.
 
-Build:
-Run CMake: Configure and CMake: Build in VS Code.
-Generates ChassisControls.uf2 in the build folder.
+#### Flashing
+- **Flash to Pico**:
+  - Run the “Flash” task:
+    ```bash
+    Ctrl+Shift+B and select "Flash"
+    ```
+  This executes:
+    ```bash
+    ${env:HOME}/.pico-sdk/openocd/0.12.0+dev/openocd.exe -s ${env:HOME}/.pico-sdk/openocd/0.12.0+dev/scripts -f interface/cmsis-dap.cfg -f target/rp2040.cfg -c "adapter speed 5000; program \"${workspaceFolder}/build/ChassisControls.uf2\" verify reset exit"
+    ```
+  (or Windows path ${env:USERPROFILE}).
+  Connect the Pico 2 in BOOTSEL mode, then copy ChassisControls.uf2 to the Pico drive.
 
-Flash:
-Copy ChassisControls.uf2 to the Pico 2 in BOOTSEL mode.
+#### Debugging
+- **Pico Debugging**:
+  - Use one of these configurations in launch.json:
 
-Debug:
-Use launch.json with OpenOCD for on-device debugging.
+    *Pico Debug (Cortex-Debug):*
+    - Press F5, select “Pico Debug (Cortex-Debug)” (uses OpenOCD internally).
+    - Requires “Build (Pico)” and “Flash” tasks first.
+
+    *Pico Debug (Cortex-Debug with external OpenOCD):*
+    - Launch OpenOCD manually, then select this configuration.
+
+    *Pico Debug (C++ Debugger):*
+    - Press F5, select “Pico Debug (C++ Debugger)” (uses cppdbg with OpenOCD).
+    - Requires “Flash” task.
+    - Set breakpoints in ChassisControls.c or related files.
+    - Uses SVD for register visualization, targeting build/ChassisControls.uf2.
 
 Note: The current ChassisControls.c runs simulation-style tests. For Pico, modify ChassisControls.c to integrate with real sensor inputs (e.g., ADC for angles/speeds) and PWM outputs (e.g., GPIO for actuators).
+
+### VS Code Extensions
+To fully utilize this project in VS Code, install these recommended extensions (as per extensions.json):
+
+- marus25.cortex-debug (for ARM debugging)  
+- ms-vscode.cpptools (C/C++ IntelliSense)  
+- ms-vscode.cpptools-extension-pack (C/C++ tools)  
+- ms-vscode.vscode-serial-monitor (serial communication)  
+- raspberry-pi.raspberry-pi-pico (Pico-specific tools)
+
+Install via the VS Code Extensions view or by adding to your settings.json.
 
 ## Usage
 
