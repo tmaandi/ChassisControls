@@ -29,32 +29,34 @@ This repository aims to serve as a learning resource and starting point for anyo
 
 ## Project Structure
 
-ChassisControls/
-├── .vscode/
-│   ├── tasks.json    # Build tasks for PC and Pico
-│   └── launch.json   # Debug configs for PC and Pico
-├── ABS/
-│   ├── abs.c         # ABS state machine implementation
-│   └── abs.h         # ABS header
-├── FM/
-│   ├── fault.c       # Fault detection implementation
-│   └── fault.h       # Fault header
-├── SC/
-│   ├── controllers.c # PID controller implementation
-│   └── controllers.h # PID header
-├── filters.c         # Moving average filter implementation
-├── filters.h         # Filter header
-├── pwm.c             # PWM conversion implementation
-├── pwm.h             # PWM header
-├── STEER/
-│   ├── steer.c       # Steering state machine implementation
-│   └── steer.h       # Steering header
-├── Tests/
-│   └── test_chassis.py   # Python verification script
-├── ChassisControls.c # Main entry point with test sequences
-├── .gitignore        # Git ignore file
-├── CMakeLists.txt    # CMake configuration for Pico
-└── pico_sdk_import.cmake # Pico SDK import
+Here’s the directory layout of the project, optimized for clarity on GitHub:
+
+- `ChassisControls/`
+  - `.vscode/`
+    - `tasks.json` # Build tasks for PC and Pico
+    - `launch.json` # Debug configs for PC and Pico
+  - `ABS/`
+    - `abs.c` # ABS state machine implementation
+    - `abs.h` # ABS header
+  - `FM/`
+    - `fault.c` # Fault detection implementation
+    - `fault.h` # Fault header
+  - `SC/`
+    - `controllers.c` # PID controller implementation
+    - `controllers.h` # PID header
+  - `filters.c` # Moving average filter implementation
+  - `filters.h` # Filter header
+  - `pwm.c` # PWM conversion implementation
+  - `pwm.h` # PWM header
+  - `STEER/`
+    - `steer.c` # Steering state machine implementation
+    - `steer.h` # Steering header
+  - `Tests/`
+    - `test_chassis.py` # Python verification script
+  - `ChassisControls.c` # Main entry point with test sequences
+  - `.gitignore` # Git ignore file
+  - `CMakeLists.txt` # CMake configuration for Pico
+  - `pico_sdk_import.cmake` # Pico SDK import
 
 ## Building and Running
 
