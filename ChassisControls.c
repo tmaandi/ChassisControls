@@ -9,6 +9,7 @@
 #include "filters.h"
 
 #include "abs.h"
+#include "fault.h"
 #include "steer.h"
 
 const PIDParams absParams = {  1.00F, /* KP */  
@@ -36,7 +37,12 @@ int main() {
 
     float setpointABS = 10.0F;
 
+    /* Normal */
     float steering_angles[] = {-45, 0, 45, 30, -30, 0};
+    /* Stuck */
+    // float steering_angles[] = {10, 10, 10, 10, 10, 10};
+    // /* Out-of-Range */
+    // float steering_angles[] = {200, 200};
 
     int num_steer_angles = sizeof(steering_angles)/sizeof(float);
 
@@ -106,6 +112,12 @@ int main() {
         printf("Setpoint: %.2f, Filtered Steering Angle: %.2f, SteerState: %s, Control: %d\n", setpointSteer, filtered_steer_angle, steerStateStr, controlCmdSteer);
 
     }
+
+    /* Fault Management */
+
+    bool fault = detectFault(steering_angles, 5, -50.0f, 50.0f);
+
+    printf("\nFault Detected: %b\n\n",fault);
     
     return 0;
 }
