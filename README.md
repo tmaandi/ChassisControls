@@ -29,8 +29,6 @@ This repository aims to serve as a learning resource and starting point for anyo
 
 ## Project Structure
 
-Here’s the directory layout of the project, optimized for clarity on GitHub:
-
 - `ChassisControls/`
   - `.vscode/`
     - `tasks.json` # Build tasks for PC and Pico
