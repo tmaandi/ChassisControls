@@ -1,3 +1,5 @@
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 
 #include <stdbool.h>
 
@@ -12,3 +14,5 @@ typedef struct {
 } PIDParams;
 
 float pidControl(float setpoint, float currentSpeedFilt, bool reset, const PIDParams* params); 
+
+#endif /* CONTROLLER_H */

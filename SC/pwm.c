@@ -18,12 +18,10 @@ Embedded-friendly—minimal overhead.
 #include <stdint.h>  // For uint8_t
 #include "pwm.h"
 
-uint8_t pidToPwm(float pidOutput)
-{
-    uint8_t pwm = (uint8_t)((pidOutput + 100.0f) * 1.275f);
+uint8_t pidToPwm(float pidOutput) {
+    float scaled = (pidOutput + 100.0f) * (255.0f / 200.0f); // Exact scaling
 
-    pwm = (uint8_t)PWM_MAX(PWM_MIN_VAL, pwm);
-    pwm = (uint8_t)PWM_MIN(pwm, PWM_MAX_VAL);
-
-    return pwm;
+    uint8_t pwm = (uint8_t)(scaled + 0.5f); // Round up
+    
+    return PWM_MIN(PWM_MAX(PWM_MIN_VAL, pwm), PWM_MAX_VAL);
 }

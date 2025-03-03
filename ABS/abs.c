@@ -2,10 +2,8 @@
 #include <stdint.h>
 #include <math.h>
 
-
-#include "filters.h"
-
 #include "abs.h"
+#include "controllers.h"
 #include "pwm.h"
 
 /*
@@ -17,7 +15,7 @@ Release if speed > setpoint.”
 
 */
 
-const AbsState nextState[3][3] = {{IDLE, IDLE, IDLE},
+const AbsState nextABSState[3][3] = {{IDLE, IDLE, IDLE},
                                   {APPLY, APPLY, APPLY},
                                   {RELEASE, RELEASE, RELEASE}};
 
@@ -33,7 +31,7 @@ AbsState absControl(float setpoint, float currentSpeedFilt, uint8_t* controlCmd,
 
     event = calcAbsEvent(setpoint, currentSpeedFilt);
 
-    AbsState next_state = nextState[event][current_state];
+    AbsState next_state = nextABSState[event][current_state];
 
     bool reset_pid = false;
 

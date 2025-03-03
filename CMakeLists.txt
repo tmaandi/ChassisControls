@@ -46,6 +46,7 @@ set(SOURCES
     SC/controllers.c
     SC/filters.c
     SC/pwm.c
+    STEER/steer.c
 )
 
 if(PC_BUILD)
@@ -54,6 +55,7 @@ if(PC_BUILD)
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/ABS
         ${CMAKE_CURRENT_LIST_DIR}/SC
+        ${CMAKE_CURRENT_LIST_DIR}/STEER
     )
     # Add math library for PC build
     target_link_libraries(ChassisControlsPC m)
@@ -63,6 +65,7 @@ else()
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/ABS
         ${CMAKE_CURRENT_LIST_DIR}/SC
+        ${CMAKE_CURRENT_LIST_DIR}/STEER
     )
     # Add pico-specific configurations
     pico_set_program_name(ChassisControls "ChassisControls")

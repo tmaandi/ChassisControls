@@ -5,10 +5,13 @@
 #include "pico/stdlib.h"
 #endif
 
-#include "abs.h"
+#include "controllers.h"
 #include "filters.h"
 
-const PIDParams params = {  1.00F, /* KP */  
+#include "abs.h"
+#include "steer.h"
+
+const PIDParams absParams = {  1.00F, /* KP */  
                             0.10F, /* KI */  
                             0.05F, /* KD */ 
                             0.01F, /* DT */ 
@@ -17,27 +20,47 @@ const PIDParams params = {  1.00F, /* KP */
                           -100.0F  /* OUTPUT_MIN */ 
                          };
 
+const PIDParams steerParams = { 2.0F, 
+                                0.1F, 
+                                0.05F, 
+                                 0.01F, 
+                                50.0F, 
+                               100.0F, 
+                              -100.0F};
+
 int main() {
 
     float speeds[] = {10, 8, 6, 6, 8, 10, 14, 16, 14};
 
     int num_speeds = sizeof(speeds)/sizeof(float);
 
-    float setpoint = 10.0F;
+    float setpointABS = 10.0F;
+
+    float steering_angles[] = {-45, 0, 45, 30, -30, 0};
+
+    int num_steer_angles = sizeof(steering_angles)/sizeof(float);
+
+    float setpointSteer = 0.0F;
 
     AbsState abs_state = IDLE;
 
-    uint8_t controlCmd = 0;
+    SteeringState steer_state = CENTER;
+
+    uint8_t controlCmdABS = 0;
+    uint8_t controlCmdSteer = 0;
 
     float filtered_whl_spd;
+    float filtered_steer_angle;
+
     const char* absStateStr;
+    const char* steerStateStr;
 
     for (int i = 0; i < num_speeds; i++) 
     {
 
         filtered_whl_spd = movingAverage(speeds[i]);
 
-        abs_state = absControl(setpoint, filtered_whl_spd, &controlCmd, &params);
+        abs_state = absControl(setpointABS, filtered_whl_spd, &controlCmdABS, &absParams);
 
         switch (abs_state) {
             case IDLE:
@@ -54,7 +77,34 @@ int main() {
             break;
         }
         
-        printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpoint, filtered_whl_spd, absStateStr, controlCmd);
+        //printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpointABS, filtered_whl_spd, absStateStr, controlCmdABS);
+
+    }
+
+    for (int i = 0; i < num_steer_angles; i++)
+    {
+        /* Steering Control */
+        filtered_steer_angle = movingAverageSteering(steering_angles[i]);
+
+        steer_state = steeringControl(setpointSteer, filtered_steer_angle, &controlCmdSteer, &steerParams);
+
+        switch (steer_state) {
+            case CENTER:
+            steerStateStr = "CENTER";
+            break;
+            case LEFT:
+            steerStateStr = "LEFT";
+            break;
+            case RIGHT:
+            steerStateStr = "RIGHT";
+            break;
+            default:
+            steerStateStr = "UNKNOWN";
+            break;
+        }
+        
+        printf("Setpoint: %.2f, Filtered Steering Angle: %.2f, SteerState: %s, Control: %d\n", setpointSteer, filtered_steer_angle, steerStateStr, controlCmdSteer);
+
     }
     
     return 0;
