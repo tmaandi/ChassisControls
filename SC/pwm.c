@@ -16,6 +16,7 @@ No floating-point math in final output (integer return).
 Embedded-friendly—minimal overhead.
 */
 #include <stdint.h>  // For uint8_t
+#include "fault.h"
 #include "pwm.h"
 
 uint8_t pidToPwm(float pidOutput) {
@@ -33,7 +34,7 @@ Problem: “Write a C function pwmActuator(uint8_t dutyCycle) that outputs a PWM
  Next: Then, adjust pwmActuator to reduce duty cycle if speed drops below 10 m/s (brake less if slipping).”
 */
 
-uint8_t pwmActuator(uint8_t dutyCycle) {
+uint8_t pwmActuator(uint8_t dutyCycle, FaultState* faultState) {
 
     static uint8_t tick_count = 0;
 
@@ -51,6 +52,10 @@ uint8_t pwmActuator(uint8_t dutyCycle) {
         tick_count = 0;
     }
 
+    if (faultState->faulted == true)
+    {
+        return 0;
+    }
     // Set output based on duty cycle
     if (tick_count <= dutyCycle) {
         output = 1;

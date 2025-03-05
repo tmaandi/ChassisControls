@@ -2,6 +2,7 @@
 #define PWM_H
 
 #include <stdint.h>
+#include "fault.h"
 
 #define PWM_MAX_VAL 255
 #define PWM_MIN_VAL 0
@@ -14,7 +15,7 @@
 
 uint8_t pidToPwm(float pidOutput);
 
-uint8_t pwmActuator(uint8_t dutyCycle);
+uint8_t pwmActuator(uint8_t dutyCycle, FaultState* faultState);
 
 
 #endif /* PWM_H */

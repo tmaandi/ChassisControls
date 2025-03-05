@@ -95,7 +95,7 @@ int main() {
             controlCmdABS = 0;
         }
 
-        actuatorOutput = pwmActuator(controlCmdABS);
+        actuatorOutput = pwmActuator(controlCmdABS, &actuatorFaultState);
         
         printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpointABS, filtered_whl_spd, absStateStr, controlCmdABS);
 
