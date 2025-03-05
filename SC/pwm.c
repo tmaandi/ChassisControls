@@ -25,3 +25,36 @@ uint8_t pidToPwm(float pidOutput) {
     
     return PWM_MIN(PWM_MAX(PWM_MIN_VAL, pwm), PWM_MAX_VAL);
 }
+
+/*
+Problem: “Write a C function pwmActuator(uint8_t dutyCycle) that outputs a PWM signal (0 or 1)
+ for a brake solenoid. It’s called every 1ms in an interrupt, with a 100ms period. dutyCycle is 0-100%.”
+
+ Next: Then, adjust pwmActuator to reduce duty cycle if speed drops below 10 m/s (brake less if slipping).”
+*/
+
+uint8_t pwmActuator(uint8_t dutyCycle) {
+
+    static uint8_t tick_count = 0;
+
+    uint8_t output = 0; // Explicit init
+
+    // Clamp duty cycle to 0-100%
+    if (dutyCycle > 100) {
+        dutyCycle = 100;
+    }
+
+    // Increment and reset first
+    tick_count++;
+
+    if (tick_count >= PWM_PERIOD_MS) {
+        tick_count = 0;
+    }
+
+    // Set output based on duty cycle
+    if (tick_count <= dutyCycle) {
+        output = 1;
+    }
+
+    return output;
+}

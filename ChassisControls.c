@@ -10,21 +10,23 @@
 
 #include "abs.h"
 #include "fault.h"
+#include "pwm.h"
+#include "sensors.h"
 #include "steer.h"
 
-const PIDParams absParams = {  1.00F, /* KP */  
-                            0.10F, /* KI */  
-                            0.05F, /* KD */ 
-                            0.01F, /* DT */ 
-                           50.00F, /* INTEGRAL_MAX */ 
-                          100.00F, /* OUTPUT_MAX */
-                          -100.0F  /* OUTPUT_MIN */ 
-                         };
+const PIDParams absParams = {  1.00F,   /* KP */  
+                               0.10F,   /* KI */  
+                               0.05F,   /* KD */ 
+                               0.01F,   /* DT */ 
+                               50.00F,  /* INTEGRAL_MAX */ 
+                               100.00F, /* OUTPUT_MAX */
+                              -100.0F   /* OUTPUT_MIN */ 
+                            };
 
 const PIDParams steerParams = { 2.0F, 
                                 0.1F, 
                                 0.05F, 
-                                 0.01F, 
+                                0.01F, 
                                 50.0F, 
                                100.0F, 
                               -100.0F};
@@ -58,13 +60,15 @@ int main() {
     float filtered_whl_spd;
     float filtered_steer_angle;
 
+    float actuatorOutput;
+
     const char* absStateStr;
     const char* steerStateStr;
 
     for (int i = 0; i < num_speeds; i++) 
     {
 
-        filtered_whl_spd = movingAverage(speeds[i]);
+        filtered_whl_spd = movingAverage(&WhlSpeedFiltState, speeds[i]);
 
         abs_state = absControl(setpointABS, filtered_whl_spd, &controlCmdABS, &absParams);
 
@@ -82,15 +86,25 @@ int main() {
             absStateStr = "UNKNOWN";
             break;
         }
+
+        // Testing readWheelSpeed()
+        // filtered_whl_spd = readWheelSpeed(adc)
+
+        if (filtered_whl_spd < SPEED_THRESHOLD)
+        {
+            controlCmdABS = 0;
+        }
+
+        actuatorOutput = pwmActuator(controlCmdABS);
         
-        //printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpointABS, filtered_whl_spd, absStateStr, controlCmdABS);
+        printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpointABS, filtered_whl_spd, absStateStr, controlCmdABS);
 
     }
 
     for (int i = 0; i < num_steer_angles; i++)
     {
         /* Steering Control */
-        filtered_steer_angle = movingAverageSteering(steering_angles[i]);
+        filtered_steer_angle = movingAverage(&SteerAngFiltState, steering_angles[i]);
 
         steer_state = steeringControl(setpointSteer, filtered_steer_angle, &controlCmdSteer, &steerParams);
 
