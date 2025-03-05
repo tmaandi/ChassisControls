@@ -44,10 +44,11 @@ set(SOURCES
     ChassisControls.c
     ABS/abs.c
     FM/fault.c
+    IO/pwm.c
+    IO/adc.c
     SA/sensors.c
     SC/controllers.c
     SC/filters.c
-    SC/pwm.c
     STEER/steer.c
 )
 
@@ -57,6 +58,7 @@ if(PC_BUILD)
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/ABS
         ${CMAKE_CURRENT_LIST_DIR}/FM
+        ${CMAKE_CURRENT_LIST_DIR}/IO
         ${CMAKE_CURRENT_LIST_DIR}/SA
         ${CMAKE_CURRENT_LIST_DIR}/SC
         ${CMAKE_CURRENT_LIST_DIR}/STEER
@@ -69,6 +71,7 @@ else()
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/ABS
         ${CMAKE_CURRENT_LIST_DIR}/FM
+        ${CMAKE_CURRENT_LIST_DIR}/IO
         ${CMAKE_CURRENT_LIST_DIR}/SA
         ${CMAKE_CURRENT_LIST_DIR}/SC
         ${CMAKE_CURRENT_LIST_DIR}/STEER

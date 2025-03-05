@@ -9,6 +9,7 @@
 #include "filters.h"
 
 #include "abs.h"
+#include "adc.h"
 #include "fault.h"
 #include "pwm.h"
 #include "sensors.h"
@@ -95,6 +96,10 @@ int main() {
             controlCmdABS = 0;
         }
 
+        adcInterruptHandler();
+
+        printf("\nActuator Fault Detected: %b\n\n",actuatorFaultState.faulted);
+        
         actuatorOutput = pwmActuator(controlCmdABS, &actuatorFaultState);
         
         printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpointABS, filtered_whl_spd, absStateStr, controlCmdABS);
@@ -127,7 +132,7 @@ int main() {
 
     }
 
-    /* Fault Management */
+    /* Steering Fault Management */
 
     bool fault = detectFault(steering_angles, 5, -50.0f, 50.0f);
 

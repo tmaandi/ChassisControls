@@ -3,6 +3,7 @@
 #define FAULT_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 /* Actuator Faults */
 #define ACT_CUR_MAX 819  // 4A (4/5 * 1023)
