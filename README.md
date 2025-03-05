@@ -42,10 +42,10 @@ This repository aims to serve as a learning resource and starting point for anyo
   - `SC/`
     - `controllers.c` # PID controller implementation
     - `controllers.h` # PID header
-  - `filters.c` # Moving average filter implementation
-  - `filters.h` # Filter header
-  - `pwm.c` # PWM conversion implementation
-  - `pwm.h` # PWM header
+    - `filters.c` # Moving average filter implementation
+    - `filters.h` # Filter header
+    - `pwm.c` # PWM conversion implementation
+    - `pwm.h` # PWM header
   - `STEER/`
     - `steer.c` # Steering state machine implementation
     - `steer.h` # Steering header
