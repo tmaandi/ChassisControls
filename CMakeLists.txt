@@ -48,6 +48,7 @@ set(SOURCES
     IO/pwm.c
     IO/adc.c
     IO/spi.c
+    IO/uart.c
     SA/sensors.c
     SC/controllers.c
     SC/filters.c

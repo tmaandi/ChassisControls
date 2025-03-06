@@ -16,6 +16,7 @@
 #include "sensors.h"
 #include "spi.h"
 #include "steer.h"
+#include "uart.h"
 
 const PIDParams absParams = {  1.00F,   /* KP */  
                                0.10F,   /* KI */  
@@ -162,6 +163,11 @@ int main() {
 
     /* SPI Test */
     spiTransmit(0xA5);
+
+    /* UART Test */
+    // gpio_init(UART_TX_PIN); 
+    // gpio_set_dir(UART_TX_PIN, GPIO_OUT);
+    uartTransmit(0x41);
     
     return 0;
 }
