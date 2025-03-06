@@ -14,6 +14,7 @@
 #include "fault.h"
 #include "pwm.h"
 #include "sensors.h"
+#include "spi.h"
 #include "steer.h"
 
 const PIDParams absParams = {  1.00F,   /* KP */  
@@ -99,7 +100,7 @@ int main() {
 
         adcInterruptHandler();
 
-        printf("\nActuator Fault Detected: %b\n\n",actuatorFaultState.faulted);
+        printf("\nActuator Fault Detected: %d\n\n", actuatorFaultState.faulted);
 
         actuatorOutput = pwmActuator(controlCmdABS, &actuatorFaultState);
         
@@ -158,6 +159,9 @@ int main() {
     // Edge case: Invalid value for fault
     updateStatusRegister(&reg, FAULT_OVERTEMP, 2);  // Ignored
     printf("Invalid value: 0x%04X (expect 0x0008)\n", reg);
+
+    /* SPI Test */
+    spiTransmit(0xA5);
     
     return 0;
 }
