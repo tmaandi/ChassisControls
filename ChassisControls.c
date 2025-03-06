@@ -9,6 +9,7 @@
 #include "filters.h"
 
 #include "abs.h"
+#include "ac.h"
 #include "adc.h"
 #include "fault.h"
 #include "pwm.h"
@@ -99,7 +100,7 @@ int main() {
         adcInterruptHandler();
 
         printf("\nActuator Fault Detected: %b\n\n",actuatorFaultState.faulted);
-        
+
         actuatorOutput = pwmActuator(controlCmdABS, &actuatorFaultState);
         
         printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpointABS, filtered_whl_spd, absStateStr, controlCmdABS);
@@ -137,6 +138,26 @@ int main() {
     bool fault = detectFault(steering_angles, 5, -50.0f, 50.0f);
 
     printf("\nFault Detected: %b\n\n",fault);
+
+    /* Test Bit masking */
+
+    uint16_t reg = 0;
+
+    // Test 1: Set overcurrent fault
+    updateStatusRegister(&reg, FAULT_OVERCURRENT, 1);
+    printf("Overcurrent: 0x%04X (expect 0x0001)\n", reg);  // 0b0001
+
+    // Test 2: Set mode to reverse
+    updateStatusRegister(&reg, MODE_POS, 2);  // 10 = reverse
+    printf("Reverse mode: 0x%04X (expect 0x0009)\n", reg);  // 0b0101
+
+    // Test 3: Clear overcurrent
+    updateStatusRegister(&reg, FAULT_OVERCURRENT, 0);
+    printf("Clear overcurrent: 0x%04X (expect 0x0008)\n", reg);  // 0b0100
+
+    // Edge case: Invalid value for fault
+    updateStatusRegister(&reg, FAULT_OVERTEMP, 2);  // Ignored
+    printf("Invalid value: 0x%04X (expect 0x0008)\n", reg);
     
     return 0;
 }

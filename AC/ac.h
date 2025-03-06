@@ -1,0 +1,15 @@
+#ifndef AC_H
+#define AC_H
+
+#include <stdint.h>
+#include <stdbool.h>
+
+#define FAULT_OVERCURRENT 0
+#define FAULT_OVERTEMP 1
+#define MODE_POS 2
+#define FAULT_WHEEL_SPEED 4
+#define MODE_MASK 0x000C  // Bits 2-3 (0b00001100)
+
+bool updateStatusRegister(uint16_t* reg, uint8_t bit_pos, uint8_t value);
+
+#endif // AC_H

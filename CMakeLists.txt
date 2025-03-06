@@ -43,6 +43,7 @@ endif()
 set(SOURCES 
     ChassisControls.c
     ABS/abs.c
+    AC/ac.c
     FM/fault.c
     IO/pwm.c
     IO/adc.c
@@ -57,6 +58,7 @@ if(PC_BUILD)
     target_include_directories(ChassisControlsPC PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/ABS
+        ${CMAKE_CURRENT_LIST_DIR}/AC
         ${CMAKE_CURRENT_LIST_DIR}/FM
         ${CMAKE_CURRENT_LIST_DIR}/IO
         ${CMAKE_CURRENT_LIST_DIR}/SA
@@ -70,6 +72,7 @@ else()
     target_include_directories(ChassisControls PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/ABS
+        ${CMAKE_CURRENT_LIST_DIR}/AC
         ${CMAKE_CURRENT_LIST_DIR}/FM
         ${CMAKE_CURRENT_LIST_DIR}/IO
         ${CMAKE_CURRENT_LIST_DIR}/SA
