@@ -47,6 +47,7 @@ set(SOURCES
     FM/fault.c
     IO/pwm.c
     IO/adc.c
+    IO/can.c
     IO/spi.c
     IO/uart.c
     SA/sensors.c

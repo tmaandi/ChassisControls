@@ -11,6 +11,7 @@
 #include "abs.h"
 #include "ac.h"
 #include "adc.h"
+#include "can.h"
 #include "fault.h"
 #include "pwm.h"
 #include "sensors.h"
@@ -168,6 +169,12 @@ int main() {
     // gpio_init(UART_TX_PIN); 
     // gpio_set_dir(UART_TX_PIN, GPIO_OUT);
     uartTransmit(0x41);
+    
+    /* CAN Test */
+    uint16_t id = 0x123;
+    uint8_t data[8] = {0x01, 0x02, 0x03, 0x04,0x05, 0x06, 0x07, 0x08};
+
+    canTransmit(id, data);
     
     return 0;
 }
