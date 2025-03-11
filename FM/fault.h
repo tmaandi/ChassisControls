@@ -21,6 +21,8 @@ typedef struct {
 
 bool detectActuatorFault(FaultState* fault, uint16_t adcCurrent);
 
+uint8_t monitorActuatorFault(uint16_t current, volatile uint8_t* fault_flag);
+
 extern FaultState actuatorFaultState;
 
 #endif

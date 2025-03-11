@@ -100,3 +100,34 @@ bool detectActuatorFault(FaultState* state, uint16_t adcCurrent)
 
     return (state->faulted);
 }
+
+/*
+
+Actuator Fault Monitor
+Task: “Write a C function monitorActuatorFault to check an actuator’s current (0-5000 mA) 
+against a threshold (4000 mA) and update a volatile fault flag. Return fault status. 
+Simulate with printf.”
+
+Inputs: uint16_t current (mA), volatile uint8_t* fault_flag.
+Output: uint8_t (1 = fault, 0 = no fault).
+Constraints: No heap, embedded-friendly.
+*/
+
+uint8_t monitorActuatorFault(uint16_t current, volatile uint8_t* fault_flag)
+{
+    // Edge case: invalid current
+    if (current > 5000) {
+        printf("Invalid current: %u mA\n", current);
+        return *fault_flag;  // No change
+    }
+
+    // Check threshold
+    if (current > 4000) {
+        *fault_flag = 1;
+        printf("Fault: Current %u mA > 4000 mA\n", current);
+    } else {
+        *fault_flag = 0;  // Reset if below threshold
+        printf("No fault: Current %u mA\n", current);
+    }
+    return *fault_flag;
+}

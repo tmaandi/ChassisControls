@@ -59,3 +59,40 @@ void canTransmit(uint16_t id, uint8_t* data) {
     printf("ACK: 1\n");
     printf("EOF: 1111111\n");
 }
+
+/*
+Task: “Write a C function parseCanMessage to extract an 11-bit ID and 8-byte data from 
+a CAN 2.0 A frame buffer (simplified). Print ID and first 2 data bytes.”
+
+Inputs: uint8_t* buffer (assume 11 bytes: ID high byte, ID low byte, 8 data bytes).
+Output: None (prints parsed values).
+Constraints: Bitwise ops, no heap.
+Example:
+
+Buffer: {0x01, 0x23, 0xAA, 0xBB, 0, 0, 0, 0, 0, 0} → ID = 0x123, data[0] = 0xAA, data[1] = 0xBB.
+Start: “Let’s break it down”—solve it! Code here, think aloud.
+*/
+void parseCanMessage(uint8_t* buffer)
+{
+    if (buffer == NULL)
+    {
+        printf("Error: Null buffer\n");
+        return;
+    }
+
+    uint16_t id = 0;
+
+    id = ((uint16_t)buffer[0] << 8) | buffer[1];
+
+    if (id > 0x7FF)
+    {
+        printf("Error: ID 0x%04X exceeds 11-bit max for CAN 2.0A\n",id);
+        return;
+    }
+
+    printf("CAN ID: 0x%03X\n",id);
+
+    printf("Byte 0: %02X ",buffer[2]);
+
+    printf("Byte 1: %02X \n",buffer[3]);
+}

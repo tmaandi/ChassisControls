@@ -9,7 +9,7 @@
 
 void canTransmit(uint16_t id, uint8_t* data);
 
-
+void parseCanMessage(uint8_t* buffer);
 
 #endif // CAN_H
 

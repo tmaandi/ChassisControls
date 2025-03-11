@@ -175,6 +175,19 @@ int main() {
     uint8_t data[8] = {0x01, 0x02, 0x03, 0x04,0x05, 0x06, 0x07, 0x08};
 
     canTransmit(id, data);
+
+    /* Test monitorActuatorFault */
+    uint8_t actuatorFaultFlag = 0;
+    uint16_t actuatorCurrent = 4100;
+
+    monitorActuatorFault(actuatorCurrent, &actuatorFaultFlag);
+
+    printf("actuatorFaultFlag: %d\n", actuatorFaultFlag);
+
+    /* void parseCanMessage(uint8_t* buffer) */
+    uint8_t bufferToCANParse[] = {0x01, 0x23, 0xAA, 0xBB, 0, 0, 0, 0, 0, 0} ;
+    
+    parseCanMessage(&bufferToCANParse);
     
     return 0;
 }
