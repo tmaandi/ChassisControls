@@ -17,5 +17,6 @@ uint8_t pidToPwm(float pidOutput);
 
 uint8_t pwmActuator(uint8_t dutyCycle, FaultState* faultState);
 
+uint8_t limitPwmDuty(uint8_t input);
 
 #endif /* PWM_H */

@@ -63,3 +63,33 @@ uint8_t pwmActuator(uint8_t dutyCycle, FaultState* faultState) {
 
     return output;
 }
+
+/*
+PWM Duty Limiter
+Task: “Write a C function limitPwmDuty to rescale a PWM duty cycle (0-255) between a min (50) and max (200). 
+Use a 1D lookup table for scaling if input exceeds bounds.”
+
+Inputs: uint8_t duty (raw input).
+Output: uint8_t (scaled duty).
+Constraints: No floats, embedded-friendly.
+Example:
+
+duty = 30 → 50 (min).
+duty = 150 → 150 (within).
+duty = 210 → 200 (max).
+Start: “Let’s break it down”—solve it! Code here, think aloud.
+*/
+
+const uint8_t PWM_SCALE_LUT[2] = {0, 255};
+
+#define PWM_LB (uint8_t)50
+#define PWM_UB (uint8_t)200
+
+uint8_t limitPwmDuty(uint8_t input)
+{
+    uint8_t scaled_input = 0;
+
+    scaled_input = PWM_LB + (uint8_t)(((uint16_t)(input - PWM_SCALE_LUT[0])*(PWM_UB - PWM_LB))/(PWM_SCALE_LUT[1] - PWM_SCALE_LUT[0]));
+
+    return scaled_input;
+}

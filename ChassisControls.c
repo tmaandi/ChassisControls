@@ -104,6 +104,13 @@ int main() {
 
         printf("\nActuator Fault Detected: %d\n\n", actuatorFaultState.faulted);
 
+        printf("Before PWM Limit: %d\n",controlCmdABS);
+
+        /* Test PWM Limit */
+        controlCmdABS = limitPwmDuty(controlCmdABS);
+
+        printf("After PWM Limit: %d\n",controlCmdABS);
+
         actuatorOutput = pwmActuator(controlCmdABS, &actuatorFaultState);
         
         printf("Setpoint: %.2f, Filtered Speed: %.2f, AbsState: %s, Control: %d\n", setpointABS, filtered_whl_spd, absStateStr, controlCmdABS);
