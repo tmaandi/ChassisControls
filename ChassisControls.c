@@ -13,6 +13,7 @@
 #include "adc.h"
 #include "can.h"
 #include "fault.h"
+#include "i2c.h"
 #include "pwm.h"
 #include "sensors.h"
 #include "spi.h"
@@ -90,15 +91,7 @@ int main() {
             default:
             absStateStr = "UNKNOWN";
             break;
-        }
-
-        // Testing readWheelSpeed()
-        // filtered_whl_spd = readWheelSpeed(adc)
-
-        if (filtered_whl_spd < SPEED_THRESHOLD)
-        {
-            controlCmdABS = 0;
-        }
+        }    
 
         adcInterruptHandler();
 
@@ -192,9 +185,17 @@ int main() {
     printf("actuatorFaultFlag: %d\n", actuatorFaultFlag);
 
     /* void parseCanMessage(uint8_t* buffer) */
-    uint8_t bufferToCANParse[] = {0x01, 0x23, 0xAA, 0xBB, 0, 0, 0, 0, 0, 0} ;
+    uint8_t bufferToCANParse[] = {0x01, 0x23, 0xAA, 0xBB, 0, 0, 0, 0, 0, 0};
     
-    parseCanMessage(&bufferToCANParse);
+    parseCanMessage(bufferToCANParse);
+
+    /* Test I2C */
+    printf("I2C Test \n");
+
+    uint8_t presSensorData[] = {0x0A, 0xF0};
+    uint16_t pressure = readBrakePressureSensor(0x1A, 0x05, presSensorData);
+    printf("Pressure: %u kPa\n", pressure);
+    
     
     return 0;
 }

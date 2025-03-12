@@ -45,9 +45,10 @@ set(SOURCES
     ABS/abs.c
     AC/ac.c
     FM/fault.c
-    IO/pwm.c
     IO/adc.c
     IO/can.c
+    IO/i2c.c
+    IO/pwm.c
     IO/spi.c
     IO/uart.c
     SA/sensors.c
