@@ -44,6 +44,7 @@ set(SOURCES
     ChassisControls.c
     ABS/abs.c
     AC/ac.c
+    AC/ac_logger.c
     FM/fault.c
     IO/adc.c
     IO/can.c

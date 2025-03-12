@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "ac_logger.h"
+
 #define FAULT_OVERCURRENT 0
 #define FAULT_OVERTEMP 1
 #define MODE_POS 2

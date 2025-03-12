@@ -196,6 +196,12 @@ int main() {
     uint16_t pressure = readBrakePressureSensor(0x1A, 0x05, presSensorData);
     printf("Pressure: %u kPa\n", pressure);
     
-    
+    /* Test Brake Actuator Logger */
+    AC_LOGGER_TYPE brakeAcState = {2500, 
+                                   128,
+                                   1};
+
+    logBrakeActuatorState(&brakeAcState);   
+
     return 0;
 }
