@@ -18,6 +18,7 @@
 #include "sensors.h"
 #include "spi.h"
 #include "steer.h"
+#include "tm.h"
 #include "uart.h"
 
 const PIDParams absParams = {  1.00F,   /* KP */  
@@ -202,6 +203,10 @@ int main() {
                                    1};
 
     logBrakeActuatorState(&brakeAcState);   
+
+    /* Temperature Monitoring */
+    printf("Monitoring Temp...\n");
+    monitorTemp();
 
     return 0;
 }
