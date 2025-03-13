@@ -206,7 +206,7 @@ int main() {
 
     /* Temperature Monitoring */
     printf("Monitoring Temp...\n");
-    
+
     monitorTemp();
 
     return 0;

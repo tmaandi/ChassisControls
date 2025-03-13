@@ -12,6 +12,10 @@
 #define FAULT_WHEEL_SPEED 4
 #define MODE_MASK 0x000C  // Bits 2-3 (0b00001100)
 
+
+#define NEWTON_RES 16
+#define RPM_RES 1
+
 bool updateStatusRegister(uint16_t* reg, uint8_t bit_pos, uint8_t value);
 
 #endif // AC_H

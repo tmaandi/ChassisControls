@@ -55,6 +55,7 @@ set(SOURCES
     SA/sensors.c
     SC/controllers.c
     SC/filters.c
+    SC/lookupTables.c
     STEER/steer.c
     TM/tm.c
 )

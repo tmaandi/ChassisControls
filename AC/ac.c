@@ -53,3 +53,8 @@ bool updateStatusRegister(uint16_t* reg, uint8_t bit_pos, uint8_t value)
 
     // Bits 5-15 reserved 
 }
+
+uint8_t getFeedforwardDuty(uint16_t force, uint16_t speed)
+{
+
+}
