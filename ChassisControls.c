@@ -209,5 +209,17 @@ int main() {
 
     monitorTemp();
 
+    /* LPF Test */
+    LOW_PASS_FILT_STATE_TYPE filter;
+
+    initLowPassFilter(&filter);
+
+    uint16_t readings[] = {12000, 13000, 11000};  // mA
+    
+    for (int i = 0; i < 3; i++) {
+        uint16_t filtered = lowPassFilter(&filter, 100, 1000, readings[i]);  // 100 Hz cutoff, 1 kHz sample
+        printf("Input: %u, Filtered: %u mA\n", readings[i], filtered);
+    }
+
     return 0;
 }
